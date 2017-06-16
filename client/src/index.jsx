@@ -8,14 +8,21 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = { 
-      repos: []
+      repos: window.exampleGitHubData
     }
-
   }
 
   search (term) {
     console.log(`${term} was searched`);
-    // TODO
+    $.ajax('/repos/import',
+      {
+        type: 'POST',
+        data: JSON.stringify({term}),
+        success: (response) => {
+          console.log(response);
+        }
+      }
+    );
   }
 
   render () {

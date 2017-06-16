@@ -6,6 +6,8 @@ app.use(express.static(__dirname + '/../client/dist'));
 
 app.post('/repos/import', function (req, res) {
   // TODO
+  console.log('I GOT POST', req);
+  res.send('nice post dude');
 });
 
 app.get('/repos', function (req, res) {
