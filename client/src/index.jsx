@@ -3,13 +3,31 @@ import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import Search from './components/Search.jsx';
 import RepoList from './components/RepoList.jsx';
+import Repo from './components/Repo.jsx';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = { 
-      repos: window.exampleGitHubData
+      repos: []
     }
+  }
+
+  componentDidMount() { 
+    console.log('mount');
+    this.getTopByForks();
+  }
+
+  getTopByForks() {
+    $.ajax('/repos',
+      {
+        type: 'GET',
+        success: (data) => {
+          console.log(data);
+          this.setState({repos: data});
+        }   
+      }
+    )
   }
 
   search (term) {

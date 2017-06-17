@@ -64,7 +64,12 @@ app.post('/repos/import', function (req, res) {
 });
 
 app.get('/repos', function (req, res) {
-  // TODO
+  console.log('getting repos');
+  db.find().sort({forks: -1}).limit(25)
+    .exec(function(err, docs) {
+      res.send(docs);
+    })
+  // res.send([1,2,3,4,5]);
 });
 
 var port = 1128;
