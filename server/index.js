@@ -2,7 +2,6 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var request = require('request');
 var db = require('../database/index.js');
-// var utils = requre('/utils.js');
 
 var app = express();
 
@@ -28,18 +27,19 @@ app.post('/repos/import', function (req, res) {
     if (error) {
       console.log('Could not get response from GitHub', error);
     } else if (Array.isArray(body)) {
-
+      // console.log(body);
       db.find({}, 'url', function (err, docs) {
-        console.log(docs);
-        // body = body.filter( (repo) => {
-        //   return docs.reduce( (found, r) => {
-        //     if (!found) {
-        //       return found;
-        //     }
-        //     console.log(r.url, repo.url);
-        //     return found = r.url === repo.url;
-        //   }, true);
-        // });
+        console.log('url', docs);
+        body = body.filter ( (git) => {
+          return docs.reduce( (found, db) => {
+            if (!found) {
+              return false;
+            }
+            return db.url !== git.html_url
+          },true);
+        })
+        
+        // console.log(body);
         console.log(body.length);
         body.forEach( (repo) => {
           console.log(repo.name);
