@@ -13,7 +13,6 @@ app.use(bodyParser.json());
 
 app.post('/repos/import', function (req, res) {
   // TODO
-  console.log('I GOT POST', req.body);
   var options = {
     'method': 'GET',
     'uri': `https://api.github.com/users/${req.body.username}/repos`,
@@ -23,15 +22,16 @@ app.post('/repos/import', function (req, res) {
   };
   request(options, function (error, res, body) {
     body = JSON.parse(body);
-    console.log(body.length);
     body.forEach( (repo) => {
-      console.log(repo.name);
       var doc = {
         'username': repo.owner.login,
         'repoTitle': repo.name,
         'url': repo.html_url,
         'forks': repo.forks_count,  
       };
+      // db.find({repoTitle: repo.html_url}, function (err, docs) {
+      //   console.log(docs);
+      // });
       db.create( doc, function (error) {
         if (error) {
           console.log('Error creating document: ', error);
@@ -39,7 +39,7 @@ app.post('/repos/import', function (req, res) {
       });
     })
   })
-  res.send('nice post dude');
+  res.sendStatus(201);
 
 });
 
