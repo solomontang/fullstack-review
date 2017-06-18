@@ -3,12 +3,13 @@ import Repo from './Repo.jsx'
 
 const RepoList = (props) => (
   <div>
-    <h4> Repo List Component </h4>
     There are {props.repos.length} repos.
-    {console.log('inrepolist', props.repos)}
-    {props.repos.map( (repo) => {
-      return <Repo info={repo} key={repo.url}></Repo>;
-    })}
+    <h2>Top 25 Repos in Database</h2>
+    <ol>
+      {props.repos.map( (repo, index) => {
+        return <Repo info={repo} key={index}></Repo>;
+      })}
+    </ol>
   </div>
 )
 

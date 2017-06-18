@@ -13,7 +13,6 @@ app.use(bodyParser.json());
 
 app.post('/repos/import', function (req, res) {
   // TODO
-  console.log(req.body);
   var options = {
     'method': 'GET',
     'uri': `https://api.github.com/users/${req.body.username}/repos`,
@@ -27,9 +26,10 @@ app.post('/repos/import', function (req, res) {
     if (error) {
       console.log('Could not get response from GitHub', error);
     } else if (Array.isArray(body)) {
-      // console.log(body);
+
+      //ONLY UNIQUE URLS GET ADDED
       db.find({}, 'url', function (err, docs) {
-        console.log('url', docs);
+        console.log('\n~~~~~~~~~~~REPO URLS~~~~~~~~~~~\n', docs);
         body = body.filter ( (git) => {
           return docs.reduce( (found, db) => {
             if (!found) {
@@ -39,8 +39,7 @@ app.post('/repos/import', function (req, res) {
           },true);
         })
         
-        // console.log(body);
-        console.log(body.length);
+        console.log('ADDING TO DATA BASE: \n');
         body.forEach( (repo) => {
           console.log(repo.name);
           var doc = {
@@ -58,13 +57,12 @@ app.post('/repos/import', function (req, res) {
         });
       });
     }
-  })
+  });
   res.sendStatus(201);
 
 });
 
 app.get('/repos', function (req, res) {
-  console.log('getting repos');
   db.find().sort({forks: -1}).limit(25)
     .exec(function(err, docs) {
       res.send(docs);

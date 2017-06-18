@@ -14,7 +14,6 @@ class App extends React.Component {
   }
 
   componentDidMount() { 
-    console.log('mount');
     this.getTopByForks();
   }
 
@@ -23,7 +22,6 @@ class App extends React.Component {
       {
         type: 'GET',
         success: (data) => {
-          console.log(data);
           this.setState({repos: data});
         }   
       }
